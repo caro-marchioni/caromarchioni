@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import Link from "next/link";
 import { resume } from "@/lib/resume";
 
 const exhibitTilt = ["-3deg", "2deg", "-1deg", "3deg", "-2deg"];
@@ -54,21 +55,23 @@ export default function Home() {
           </div>
           <div className="museum-label">
             <span>Current Exhibition</span>
-            <strong>Quality, Product Support, Digital Solutions</strong>
+            <strong>Operations, Quality, Client Experience</strong>
           </div>
         </div>
       </section>
 
       <section id="experience" className="gallery-section">
         <div className="section-heading">
-          <p className="gallery-kicker">Selected Exhibits</p>
-          <h2>Experience arranged as a moving gallery wall.</h2>
+          <h3 className="gallery-kicker">Portfolio</h3>
+          {/* Change this heading next if you want the experience section to describe your service more clearly. */}
+          <h2>A multidisciplinary background applied to real business needs</h2>
         </div>
 
         <div className="exhibit-wall">
           {resume.experience.map((item, index) => (
-            <article
+            <Link
               key={`${item.role}-${item.period}`}
+              href={`/experience/${item.slug}`}
               className="exhibit-card"
               style={
                 {
@@ -86,7 +89,7 @@ export default function Home() {
                 <p className="exhibit-company">{item.company}</p>
                 <p>{item.details}</p>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
       </section>
@@ -114,8 +117,9 @@ export default function Home() {
         <div>
           <p className="gallery-kicker">Available For</p>
           <h2>
-            Quality Assurance, Product & Process Enhancements, and Tailored
-            Digital Solutions
+            Support for small businesses, clinics, and growing teams that need
+            stronger processes, better service, and more organized day-to-day
+            operations
           </h2>
         </div>
 

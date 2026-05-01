@@ -1,4 +1,5 @@
 type ExperienceItem = {
+  slug: string;
   role: string;
   company: string;
   period: string;
@@ -24,9 +25,9 @@ type ResumeProfile = {
 
 export const resume: ResumeProfile = {
   name: "Carolina Marchioni Reyes",
-  eyebrow: "Quality Assurance Services & Product Support",
+  eyebrow: "Operations, Quality & People-Centered Support",
   title:
-    "Product-minded quality engineer creating elegant, fast, and approachable solutions.",
+    "Helping small businesses improve operations, client experience, and day-to-day processes with practical, tailored support.",
   email: "carolina.marchioni@gmail.com",
   socials: [
     {
@@ -46,41 +47,46 @@ export const resume: ResumeProfile = {
     },
   ],
   experience: [
-    {
-      role: "Sr. Manual QA Analyst - Jr. Automation Engineer",
-      company: "FX Digital",
-      period: "Jan 2025 - Present",
-      details:
-        "Building polished quality assurance processes and automation suites for a variety of clients, including startups and agencies.",
-    },
-    {
-      role: "Sr. Manual QA Analyst",
-      company: "Gurpo Digital",
-      period: "May 2024 - Oct 2024",
-      details:
-        "Shipped responsive interfaces, design systems, and customer-facing workflows focused on clarity and speed.",
-    },
-    {
-      role: "Sr. Manual QA Analyst",
-      company: "Revolt Digital",
-      period: "Dec 2021 - May 2024",
-      details:
-        "Led communication-heavy work across stakeholders, timelines, and service details with strong follow-through.",
-    },
-    {
-      role: "QA/QC - Testing Engineer & Support Specialist",
-      company: "Learnlight",
-      period: "Apr 2019 - Dec 2021",
-      details:
-        "Led communication-heavy work across stakeholders, timelines, and service details with strong follow-through.",
-    },
-      {
-      role: "Jr. QA/QC Analyst",
-      company: "Globant",
-      period: "Jun 2011 - Sep 2013",
-      details:
-        "Led communication-heavy work across stakeholders, timelines, and service details with strong follow-through.",
-    },
+  {
+    slug: "fx-digital",
+    role: "Sr. QA Analyst & Digital Operations Support",
+    company: "FX Digital",
+    period: "Jan 2025 - Present",
+    details:
+      "Support remote product teams and clients by improving delivery quality, streamlining QA processes, and introducing automation. Identify risks early, optimize workflows, and help teams ship faster with fewer issues while maintaining clear communication across stakeholders.",
+  },
+  {
+    slug: "grupo-digital",
+    role: "Sr. QA Analyst & Product Support",
+    company: "Grupo Digital",
+    period: "May 2024 - Oct 2024",
+    details:
+      "Worked closely with design, product, and development teams to ensure smooth user experiences across responsive interfaces. Helped refine customer-facing workflows, reduce friction, and align product delivery with business goals.",
+  },
+  {
+    slug: "revolt-digital",
+    role: "Sr. QA Analyst & Stakeholder Coordinator",
+    company: "Revolt Digital",
+    period: "Dec 2021 - May 2024",
+    details:
+      "Acted as a central point of coordination between teams, ensuring clear communication, timely delivery, and high-quality releases. Supported project organization, tracked issues, and improved cross-team alignment in fast-paced environments.",
+  },
+  {
+    slug: "learnlight",
+    role: "QA Engineer & Customer Support Specialist",
+    company: "Learnlight",
+    period: "Apr 2019 - Dec 2021",
+    details:
+      "Bridged QA and customer support by resolving user issues, improving platform stability, and providing actionable feedback to product teams. Contributed to better user satisfaction while supporting daily operations in a fully digital environment.",
+  },
+  {
+    slug: "globant",
+    role: "QA Analyst",
+    company: "Globant",
+    period: "Jun 2011 - Sep 2013",
+    details:
+      "Built strong QA foundations by executing test plans, identifying defects, and supporting development teams. Contributed to reliable product releases within structured, high-performance delivery teams.",
+  },
   ],
   skills: [
     "Problem Solving",
@@ -98,3 +104,7 @@ export const resume: ResumeProfile = {
     "Comfortable owning projects from first brief to shipped release.",
   ],
 };
+
+export function getExperienceBySlug(slug: string) {
+  return resume.experience.find((item) => item.slug === slug);
+}
