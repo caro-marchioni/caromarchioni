@@ -1,7 +1,11 @@
 import type { NextConfig } from "next";
 
+const isGithubActions = process.env.GITHUB_ACTIONS === "true";
+
 const nextConfig: NextConfig = {
-  /* config options here */
+  output: "export",
+  basePath: isGithubActions ? "/my-resume-site" : undefined,
+  assetPrefix: isGithubActions ? "/my-resume-site/" : undefined,
 };
 
 export default nextConfig;
