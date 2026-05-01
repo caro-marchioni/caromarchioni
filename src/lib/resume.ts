@@ -15,6 +15,7 @@ type SocialLink = {
 type ResumeProfile = {
   name: string;
   eyebrow: string;
+  heroHeading: string;
   title: string;
   email: string;
   socials: SocialLink[];
@@ -25,9 +26,10 @@ type ResumeProfile = {
 
 export const resume: ResumeProfile = {
   name: "Carolina Marchioni Reyes",
-  eyebrow: "Operations, Quality & People-Centered Support",
+  eyebrow: "People-Centered Business Support",
+  heroHeading: "Helping small businesses run better",
   title:
-    "Helping small businesses improve operations, client experience, and day-to-day processes with practical, tailored support.",
+    "I support businesses, clinics, and growing teams with clearer processes, stronger client experiences, and practical day-to-day organization.",
   email: "carolina.marchioni@gmail.com",
   socials: [
     {
