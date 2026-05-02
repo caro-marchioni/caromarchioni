@@ -17,6 +17,8 @@ type ResumeProfile = {
   eyebrow: string;
   heroHeading: string;
   title: string;
+  aboutSummary: string;
+  aboutHighlights: string[];
   email: string;
   socials: SocialLink[];
   experience: ExperienceItem[];
@@ -29,7 +31,14 @@ export const resume: ResumeProfile = {
   eyebrow: "People-centered business & operations support",
   heroHeading: "Helping small & medium businesses to thrive",
   title:
-    "The practice centers on businesses, clinics, and growing teams—clarifying how work moves through the organization, tightening handoffs and process, elevating client-facing moments, and putting day-to-day structure in place that holds under real load.",
+    "Supporting busines owners growing teams improve processes, strengthen client experience, and bring more structure to day-to-day operations.",
+  aboutSummary:
+    "I work across operations, quality, client experience, and team support, with experience spanning digital products, clinics, and small service businesses. My background combines QA, process improvement, psychology, and teaching, which means I tend to approach business problems through both structure and people.",
+  aboutHighlights: [
+    "Support for small businesses, clinics, and growing teams that need clearer systems and steadier day-to-day operations.",
+    "Work shaped by quality oversight, service design, training, and practical coordination across stakeholders.",
+    "A people-centered approach informed by a psychology degree and university teaching experience.",
+  ],
   email: "carolina.marchioni@gmail.com",
   socials: [
     {

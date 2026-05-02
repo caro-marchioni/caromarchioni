@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { SecondaryNav } from "@/app/secondary-nav";
 import { getExperienceBySlug, resume } from "@/lib/resume";
 
 export function generateStaticParams() {
@@ -28,6 +29,7 @@ export default async function ExperiencePage({
     <main className="gallery-shell min-h-screen bg-[#12121a] text-white">
       <div className="gallery-backdrop" />
       <div className="gallery-grain" />
+      <SecondaryNav />
 
       <section className="detail-page">
         <Link href="/#experience" className="gallery-link detail-back-link">
@@ -65,6 +67,11 @@ export default async function ExperiencePage({
           </p>
         </section>
       </section>
+
+      <footer className="gallery-footer">
+        <span>&copy; {new Date().getFullYear()} {resume.name}</span>
+        <span>caromarchioni</span>
+      </footer>
     </main>
   );
 }

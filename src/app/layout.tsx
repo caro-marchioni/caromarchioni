@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Space_Grotesk } from "next/font/google";
+import { HashScrollManager } from "@/app/hash-scroll-manager";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -22,6 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={spaceGrotesk.variable}>
+        <HashScrollManager />
         {children}
       </body>
     </html>
