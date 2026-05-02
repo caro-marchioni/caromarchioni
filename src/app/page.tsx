@@ -1,23 +1,47 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import Link from "next/link";
 import { GalleryNav } from "@/app/gallery-nav";
 import { resume } from "@/lib/resume";
 
-const exhibitTilt = ["-3deg", "2deg", "-1deg", "3deg", "-2deg"];
+const exhibitTilt = ["-2deg", "1.5deg", "-1deg", "2deg", "-1.5deg"];
 const accentColors = ["#cbb7a6", "#bab3cb", "#b9cbb3", "#c7cbb3", "#cbb3c7"];
+
+const EXPERIENCE_PAGE_SIZE = 5;
 
 export default function Home() {
   const [isContactOpen, setIsContactOpen] = useState(false);
   const exhibitRailRef = useRef<HTMLDivElement>(null);
+  const experienceSectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    function focusExperienceFromHash() {
+      if (window.location.hash !== "#experience") return;
+      const el = experienceSectionRef.current;
+      if (!el) return;
+      el.scrollIntoView({ block: "start", behavior: "instant" });
+      queueMicrotask(() => {
+        el.focus({ preventScroll: true });
+      });
+    }
+
+    focusExperienceFromHash();
+    window.addEventListener("hashchange", focusExperienceFromHash);
+    return () =>
+      window.removeEventListener("hashchange", focusExperienceFromHash);
+  }, []);
+
+  const showExperienceArrows =
+    resume.experience.length > EXPERIENCE_PAGE_SIZE;
 
   function scrollExhibits(direction: "left" | "right") {
     const rail = exhibitRailRef.current;
     if (!rail) return;
 
-    const amount = Math.min(rail.clientWidth * 0.8, 720);
+    const gap = parseFloat(getComputedStyle(rail).columnGap || "0") || 0;
+    const amount = rail.clientWidth + gap;
     rail.scrollBy({
       left: direction === "left" ? -amount : amount,
       behavior: "smooth",
@@ -39,7 +63,7 @@ export default function Home() {
           <p className="hero-title">{resume.title}</p>
           <div className="hero-actions">
             <a href="#experience" className="primary-action">
-              View My Work
+              View portfolio work
             </a>
             <a href={`mailto:${resume.email}`} className="ghost-action">
               {resume.email}
@@ -54,30 +78,40 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="experience" className="gallery-section">
+      <section
+        ref={experienceSectionRef}
+        id="experience"
+        className="gallery-section"
+        tabIndex={-1}
+        aria-labelledby="experience-section-title"
+      >
         <div className="section-heading">
           <h3 className="gallery-kicker">Portfolio</h3>
-          <h2>A multidisciplinary background applied to real business needs</h2>
+          <h2 id="experience-section-title">
+            A multidisciplinary background applied to real business needs
+          </h2>
         </div>
 
         <div className="exhibit-rail">
-          <button
-            type="button"
-            className="exhibit-arrow exhibit-arrow-left"
-            aria-label="Scroll experience left"
-            onClick={() => scrollExhibits("left")}
-          >
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path
-                d="M15 5 8 12l7 7"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
+          {showExperienceArrows ? (
+            <button
+              type="button"
+              className="exhibit-arrow exhibit-arrow-left"
+              aria-label="Scroll experience left"
+              onClick={() => scrollExhibits("left")}
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M15 5 8 12l7 7"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+          ) : null}
 
           <div ref={exhibitRailRef} className="exhibit-wall">
             {resume.experience.map((item, index) => (
@@ -105,23 +139,25 @@ export default function Home() {
             ))}
           </div>
 
-          <button
-            type="button"
-            className="exhibit-arrow exhibit-arrow-right"
-            aria-label="Scroll experience right"
-            onClick={() => scrollExhibits("right")}
-          >
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path
-                d="m9 5 7 7-7 7"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
+          {showExperienceArrows ? (
+            <button
+              type="button"
+              className="exhibit-arrow exhibit-arrow-right"
+              aria-label="Scroll experience right"
+              onClick={() => scrollExhibits("right")}
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="m9 5 7 7-7 7"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+          ) : null}
         </div>
       </section>
 
@@ -154,7 +190,8 @@ export default function Home() {
           </h2>
 
           <p className="contact-intro">
-            Use the form to describe your inquiry, project, or support needs.
+            The contact form can be used to outline an inquiry, project, or
+            support need.
           </p>
         </div>
 
@@ -199,7 +236,7 @@ export default function Home() {
             <div className="contact-modal-header">
               <div>
                 <p className="gallery-kicker">Contact</p>
-                <h2 id="contact-modal-title">Tell me about your inquiry</h2>
+                <h2 id="contact-modal-title">Submit an inquiry</h2>
               </div>
               <button
                 type="button"

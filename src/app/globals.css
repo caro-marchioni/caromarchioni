@@ -203,7 +203,7 @@ a {
   min-height: 100vh;
   align-items: center;
   justify-content: center;
-  padding: 112px 20px 96px;
+  padding: 96px 20px 56px;
   text-align: center;
 }
 
@@ -360,18 +360,35 @@ a {
 .timeline-section,
 .contact-gallery {
   position: relative;
-  padding: 96px clamp(20px, 5vw, 72px);
+  padding: 60px clamp(20px, 5vw, 72px);
+}
+
+#experience {
+  scroll-margin-top: 72px;
 }
 
 .section-heading {
   display: grid;
   max-width: 1180px;
-  grid-template-columns: 0.38fr 0.62fr;
-  gap: 32px;
-  margin: 0 auto 44px;
+  grid-template-columns: max-content 1fr;
+  column-gap: clamp(20px, 3.5vw, 36px);
+  row-gap: 10px;
+  align-items: start;
+  justify-items: start;
+  margin: 0 auto 28px;
 }
 
-.section-heading h2,
+.section-heading h2 {
+  margin: 0;
+  width: 100%;
+  max-width: none;
+  color: #fff;
+  font-size: clamp(32px, 4.7vw, 70px);
+  font-weight: 800;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
 .contact-gallery h2 {
   margin: 0;
   max-width: 820px;
@@ -389,16 +406,23 @@ a {
 }
 
 .exhibit-wall {
+  /* Wider gap so tilted cards never read as touching; columns slightly under 1/5 width for thinner cards */
+  --exhibit-gap: 36px;
+  --exhibit-column-shrink: 18px;
   display: grid;
   width: 100%;
   max-width: none;
   grid-auto-flow: column;
-  grid-auto-columns: minmax(220px, 250px);
-  gap: 22px;
+  grid-auto-columns: minmax(
+    0,
+    calc((100% - 4 * var(--exhibit-gap)) / 5 - var(--exhibit-column-shrink))
+  );
+  column-gap: var(--exhibit-gap);
+  row-gap: 0;
   margin: 0 auto;
   overflow-x: auto;
   overflow-y: visible;
-  padding: 30px 10px 32px;
+  padding: 22px 10px 24px;
   scrollbar-width: none;
   scroll-behavior: smooth;
 }
@@ -408,6 +432,8 @@ a {
 }
 
 .exhibit-card {
+  box-sizing: border-box;
+  width: 100%;
   min-height: 0;
   transform: rotate(var(--tilt));
   transform-origin: center;
@@ -420,7 +446,7 @@ a {
 
 .exhibit-art {
   display: grid;
-  min-height: 250px;
+  min-height: 220px;
   place-items: center;
   border: 5px ridge rgba(173, 148, 62, 0.72);
   overflow: hidden;
@@ -563,7 +589,7 @@ a {
   max-width: 1180px;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
-  margin: 28px auto 0;
+  margin: 20px auto 0;
 }
 
 .highlight-grid p {
@@ -581,7 +607,7 @@ a {
   display: grid;
   grid-template-columns: minmax(0, 0.72fr) minmax(280px, 0.28fr);
   align-items: start;
-  gap: 36px;
+  gap: 28px;
   border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
 
@@ -600,12 +626,19 @@ a {
 .detail-page {
   max-width: 980px;
   margin: 0 auto;
-  padding: 88px 20px 72px;
+  padding: 76px 20px 56px;
 }
 
 .detail-back-link {
+  gap: 8px;
   width: fit-content;
   margin-bottom: 28px;
+}
+
+.detail-back-icon {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
 }
 
 .detail-header h1 {
@@ -632,7 +665,7 @@ a {
 }
 
 .detail-placeholder {
-  margin-top: 56px;
+  margin-top: 40px;
   padding: 28px;
   border: 1px solid rgba(255, 255, 255, 0.14);
   background: rgba(255, 255, 255, 0.08);
@@ -791,7 +824,7 @@ a {
   display: flex;
   justify-content: space-between;
   gap: 20px;
-  padding: 22px clamp(20px, 5vw, 72px) 32px;
+  padding: 16px clamp(20px, 5vw, 72px) 24px;
   color: rgba(255, 255, 255, 0.46);
   font-size: 12px;
   font-weight: 700;
@@ -810,9 +843,9 @@ a {
   }
 
   .exhibit-wall {
-    grid-auto-columns: minmax(210px, 228px);
-    gap: 16px;
-    padding: 26px 4px 24px;
+    --exhibit-gap: 24px;
+    --exhibit-column-shrink: 12px;
+    padding: 20px 4px 18px;
   }
 
   .highlight-grid {
@@ -847,7 +880,7 @@ a {
   }
 
   .gallery-hero {
-    padding-top: 104px;
+    padding-top: 92px;
   }
 
   .hero-copy h1 {
@@ -857,8 +890,8 @@ a {
   .gallery-section,
   .timeline-section,
   .contact-gallery {
-    padding-top: 72px;
-    padding-bottom: 72px;
+    padding-top: 48px;
+    padding-bottom: 48px;
   }
 
   .exhibit-rail {

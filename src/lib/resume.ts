@@ -26,10 +26,10 @@ type ResumeProfile = {
 
 export const resume: ResumeProfile = {
   name: "Carolina Marchioni Reyes",
-  eyebrow: "People-Centered Business Support",
-  heroHeading: "Helping small businesses run better",
+  eyebrow: "People-centered business & operations support",
+  heroHeading: "Helping small & medium businesses to thrive",
   title:
-    "I support businesses, clinics, and growing teams with clearer processes, stronger client experiences, and practical day-to-day organization.",
+    "The practice centers on businesses, clinics, and growing teams—clarifying how work moves through the organization, tightening handoffs and process, elevating client-facing moments, and putting day-to-day structure in place that holds under real load.",
   email: "carolina.marchioni@gmail.com",
   socials: [
     {

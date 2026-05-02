@@ -30,7 +30,21 @@ export default async function ExperiencePage({
       <div className="gallery-grain" />
 
       <section className="detail-page">
-        <Link href="/" className="gallery-link detail-back-link">
+        <Link href="/#experience" className="gallery-link detail-back-link">
+          <svg
+            className="detail-back-icon"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              d="M15 5 8 12l7 7"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
           Back to portfolio
         </Link>
 
@@ -46,8 +60,8 @@ export default async function ExperiencePage({
           {/* Write the full story for this role here later: scope, challenges, actions, outcomes, tools, and what you learned. */}
           <h2>This page is ready for the full case study.</h2>
           <p>
-            Add project details, business context, responsibilities, and
-            measurable outcomes here when you are ready.
+            Project details, business context, responsibilities, and measurable
+            outcomes can be expanded here as the full case study is developed.
           </p>
         </section>
       </section>
