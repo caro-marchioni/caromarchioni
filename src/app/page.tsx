@@ -1,40 +1,33 @@
+"use client";
+
+import { useState } from "react";
 import type { CSSProperties } from "react";
+import Link from "next/link";
+import { GalleryNav } from "@/app/gallery-nav";
 import { resume } from "@/lib/resume";
 
 const exhibitTilt = ["-3deg", "2deg", "-1deg", "3deg", "-2deg"];
 const accentColors = ["#cbb7a6", "#bab3cb", "#b9cbb3", "#c7cbb3", "#cbb3c7"];
 
 export default function Home() {
+  const [isContactOpen, setIsContactOpen] = useState(false);
+
   return (
     <main className="gallery-shell min-h-screen overflow-hidden bg-[#12121a] text-white">
       <div className="gallery-backdrop" />
       <div className="gallery-grain" />
 
-      <nav className="gallery-nav">
-        <a href="#top" className="gallery-link">
-          {resume.name}
-        </a>
-        <div className="gallery-nav-center">
-          <a href="#experience" className="gallery-link">
-            Exhibits
-          </a>
-          <a href="#skills" className="gallery-link">
-            Timeline
-          </a>
-        </div>
-        <a href="#contact" className="gallery-link">
-          Contact
-        </a>
-      </nav>
+      <GalleryNav onOpenContact={() => setIsContactOpen(true)} />
 
       <section id="top" className="gallery-hero">
         <div className="hero-copy">
           <p className="gallery-kicker">{resume.eyebrow}</p>
-          <h1>{resume.name}</h1>
+          <h1>{resume.heroHeading}</h1>
+          <p className="hero-name">{resume.name}</p>
           <p className="hero-title">{resume.title}</p>
           <div className="hero-actions">
             <a href="#experience" className="primary-action">
-              Enter Gallery
+              View My Work
             </a>
             <a href={`mailto:${resume.email}`} className="ghost-action">
               {resume.email}
@@ -43,19 +36,9 @@ export default function Home() {
         </div>
 
         <div className="hero-installation" aria-hidden="true">
-          <div className="floating-frame frame-large">
-            <span>QA</span>
-          </div>
-          <div className="floating-frame frame-tall">
-            <span>UX</span>
-          </div>
-          <div className="floating-frame frame-small">
-            <span>01</span>
-          </div>
-          <div className="museum-label">
-            <span>Current Exhibition</span>
-            <strong>Operations, Quality, Client Experience</strong>
-          </div>
+          <div className="hero-glow hero-glow-left" />
+          <div className="hero-glow hero-glow-right" />
+          <div className="hero-glow hero-glow-center" />
         </div>
       </section>
 
@@ -67,8 +50,9 @@ export default function Home() {
 
         <div className="exhibit-wall">
           {resume.experience.map((item, index) => (
-            <article
+            <Link
               key={`${item.role}-${item.period}`}
+              href={`/experience/${item.slug}`}
               className="exhibit-card"
               style={
                 {
@@ -86,7 +70,7 @@ export default function Home() {
                 <p className="exhibit-company">{item.company}</p>
                 <p>{item.details}</p>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
       </section>
@@ -111,19 +95,27 @@ export default function Home() {
       </section>
 
       <section id="contact" className="contact-gallery">
-        <div>
+        <div className="contact-copy">
           <p className="gallery-kicker">Available For</p>
           <h2>
             Support for small businesses, clinics, and growing teams that need
             stronger processes, better service, and more organized day-to-day
             operations
           </h2>
+
+          <p className="contact-intro">
+            Use the form to describe your inquiry, project, or support needs.
+          </p>
         </div>
 
         <div className="contact-links">
-          <a href={`mailto:${resume.email}`} className="primary-action">
-            Email Carolina
-          </a>
+          <button
+            type="button"
+            className="primary-action"
+            onClick={() => setIsContactOpen(true)}
+          >
+            Open Contact Form
+          </button>
           {resume.socials.map((social) => (
             <a
               key={social.label}
@@ -141,6 +133,71 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {isContactOpen ? (
+        <div
+          className="contact-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="contact-modal-title"
+        >
+          <div
+            className="contact-modal-backdrop"
+            onClick={() => setIsContactOpen(false)}
+          />
+          <div className="contact-modal-panel">
+            <div className="contact-modal-header">
+              <div>
+                <p className="gallery-kicker">Contact</p>
+                <h2 id="contact-modal-title">Tell me about your inquiry</h2>
+              </div>
+              <button
+                type="button"
+                className="contact-modal-close"
+                onClick={() => setIsContactOpen(false)}
+                aria-label="Close contact form"
+              >
+                Close
+              </button>
+            </div>
+
+            <form className="contact-form">
+              <div className="contact-form-grid">
+                <label className="contact-field">
+                  <span>Name</span>
+                  <input type="text" name="name" autoComplete="given-name" />
+                </label>
+
+                <label className="contact-field">
+                  <span>Surname</span>
+                  <input
+                    type="text"
+                    name="surname"
+                    autoComplete="family-name"
+                  />
+                </label>
+              </div>
+
+              <label className="contact-field">
+                <span>Email</span>
+                <input type="email" name="email" autoComplete="email" />
+              </label>
+
+              <label className="contact-field">
+                <span>Inquiry</span>
+                <textarea name="inquiry" maxLength={2000} rows={8} />
+              </label>
+
+              <div className="contact-form-footer">
+                <p>Maximum 2000 characters.</p>
+                <button type="submit" className="primary-action">
+                  Send Inquiry
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      ) : null}
 
       <footer className="gallery-footer">
         <span>&copy; {new Date().getFullYear()} {resume.name}</span>
