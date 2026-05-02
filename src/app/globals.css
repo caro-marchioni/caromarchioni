@@ -20,6 +20,7 @@
 html {
   scroll-behavior: smooth;
   background: #12121a;
+  min-width: 0;
 }
 
 body {
@@ -27,6 +28,8 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-space-grotesk), Arial, Helvetica, sans-serif;
+  min-width: 0;
+  overflow-x: hidden;
 }
 
 a {
@@ -37,6 +40,8 @@ a {
 .gallery-shell {
   position: relative;
   isolation: isolate;
+  min-width: 0;
+  max-width: 100vw;
 }
 
 .gallery-backdrop {
@@ -114,12 +119,35 @@ a {
   color: rgba(255, 255, 255, 0.96);
 }
 
+.gallery-nav-control {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease,
+    color 180ms ease;
+}
+
+.gallery-nav-control:hover {
+  transform: translateY(-1px);
+}
+
+.gallery-nav-control:focus-visible {
+  outline: 2px solid rgba(224, 176, 122, 0.92);
+  outline-offset: 3px;
+  box-shadow:
+    0 0 0 5px rgba(224, 176, 122, 0.18),
+    0 0 22px rgba(157, 132, 226, 0.24);
+}
+
 .gallery-nav-mark {
-  display: grid;
   width: 36px;
   height: 36px;
-  place-items: center;
-  border-radius: 9px;
   border: 1px solid rgba(255, 255, 255, 0.14);
   background: linear-gradient(135deg, rgba(157, 132, 226, 0.34), rgba(224, 176, 122, 0.22));
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 0 16px rgba(157, 132, 226, 0.14);
@@ -127,16 +155,10 @@ a {
   font-weight: 700;
   letter-spacing: 0.04em;
   color: rgba(255, 255, 255, 0.92);
-  transition:
-    transform 180ms ease,
-    border-color 180ms ease,
-    background 180ms ease,
-    box-shadow 180ms ease;
 }
 
 .gallery-nav-mark:hover,
 .gallery-nav-mark:focus-visible {
-  transform: translateY(-1px);
   border-color: rgba(224, 176, 122, 0.34);
   background: linear-gradient(135deg, rgba(171, 144, 242, 0.5), rgba(224, 176, 122, 0.3));
   box-shadow:
@@ -144,23 +166,10 @@ a {
     0 0 22px rgba(157, 132, 226, 0.24);
 }
 
-.gallery-nav-mark:focus-visible {
-  outline: none;
-}
-
 .gallery-link {
-  display: inline-flex;
-  align-items: center;
   position: relative;
-  min-height: 36px;
   padding: 0 14px;
-  border-radius: 6px;
   color: rgba(255, 255, 255, 0.72);
-  transition:
-    color 180ms ease,
-    text-shadow 180ms ease,
-    background-color 180ms ease,
-    border-color 180ms ease;
 }
 
 .gallery-link:hover {
@@ -194,25 +203,23 @@ a {
   transform: scaleX(1);
 }
 
+.gallery-link:focus-visible .gallery-link-label::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
 .gallery-connect {
-  display: inline-flex;
-  min-height: 36px;
-  align-items: center;
-  justify-content: center;
   padding: 0 16px;
   margin-left: 8px;
   border: 1px solid rgba(157, 132, 226, 0.28);
-  border-radius: 9px;
   background: linear-gradient(180deg, rgba(157, 132, 226, 0.84), rgba(128, 78, 197, 0.82));
   box-shadow: 0 0 18px rgba(157, 132, 226, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.08);
   color: rgba(255, 255, 255, 0.92);
   font-size: 12px;
   font-weight: 600;
-  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background-color 180ms ease;
 }
 
 .gallery-connect:hover {
-  transform: translateY(-1px);
   border-color: rgba(224, 176, 122, 0.34);
   background: linear-gradient(180deg, rgba(171, 144, 242, 0.9), rgba(142, 91, 212, 0.88));
   box-shadow: 0 0 22px rgba(157, 132, 226, 0.26);
@@ -336,6 +343,12 @@ a {
 .primary-action:hover,
 .ghost-action:hover {
   transform: translateY(-2px);
+}
+
+.primary-action:disabled {
+  cursor: wait;
+  opacity: 0.72;
+  transform: none;
 }
 
 .ghost-action {
@@ -893,6 +906,14 @@ a {
   font-size: 13px;
 }
 
+.contact-form-status-success {
+  color: rgba(143, 194, 104, 0.92);
+}
+
+.contact-form-status-error {
+  color: rgba(224, 122, 122, 0.92);
+}
+
 .contact-form-placeholder {
   display: grid;
   place-items: center;
@@ -955,6 +976,21 @@ a {
   color: rgba(255, 255, 255, 0.82);
   font: inherit;
   cursor: pointer;
+}
+
+.thank-you-panel {
+  width: min(560px, 100%);
+  text-align: center;
+}
+
+.thank-you-panel h2 {
+  margin: 10px 0 0;
+  font-size: clamp(30px, 4vw, 44px);
+  line-height: 1.08;
+}
+
+.thank-you-panel .contact-intro {
+  margin: 18px auto 0;
 }
 
 .gallery-footer {
@@ -1034,6 +1070,9 @@ a {
   .gallery-nav {
     padding: 8px 10px;
     font-size: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
   }
 
   .gallery-connect {
@@ -1044,12 +1083,29 @@ a {
     padding: 0 8px;
   }
 
+  .gallery-nav-actions {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .gallery-nav-control {
+    min-width: 0;
+    padding: 0 10px;
+  }
+
   .gallery-hero {
-    padding-top: 92px;
+    padding: 72px 12px 48px;
+  }
+
+  .hero-copy {
+    padding: 0 10px;
   }
 
   .hero-copy h1 {
     font-size: clamp(46px, 14vw, 70px);
+    max-width: 100%;
   }
 
   .gallery-section,
@@ -1057,10 +1113,17 @@ a {
   .contact-gallery {
     padding-top: 48px;
     padding-bottom: 48px;
+    padding-left: 12px;
+    padding-right: 12px;
   }
 
   .exhibit-rail {
     gap: 10px;
+  }
+
+  .exhibit-wall {
+    grid-auto-columns: minmax(0, calc(100% - 20px));
+    -webkit-overflow-scrolling: touch;
   }
 
   .exhibit-arrow {
@@ -1084,5 +1147,215 @@ a {
 
   .detail-page {
     padding-top: 76px;
+  }
+}
+
+@media (max-width: 420px) {
+  .gallery-nav {
+    padding: 8px 8px;
+    gap: 8px;
+  }
+
+  .gallery-nav-brand,
+  .gallery-nav-actions {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .gallery-nav-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .hero-copy {
+    padding: 0 12px;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(40px, 18vw, 62px);
+  }
+
+  .hero-title {
+    font-size: 16px;
+    max-width: 100%;
+  }
+
+  .hero-actions,
+  .hero-proof-strip {
+    justify-content: center;
+  }
+
+  .hero-proof-strip {
+    gap: 8px 12px;
+  }
+
+  .hero-proof-strip span:not(:last-child)::after {
+    right: -8px;
+  }
+
+  .primary-action,
+  .ghost-action {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .gallery-section,
+  .timeline-section,
+  .contact-gallery {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .exhibit-wall {
+    padding: 16px 6px 18px;
+    --exhibit-gap: 18px;
+    --exhibit-column-shrink: 10px;
+  }
+
+  .skill-dial {
+    min-height: 64px;
+  }
+
+  .skill-dial span {
+    min-width: 120px;
+    padding: 0 14px;
+  }
+
+  .highlight-grid {
+    gap: 12px;
+  }
+
+  .contact-panel {
+    padding: 20px;
+  }
+
+  .contact-form {
+    padding: 18px;
+  }
+
+  .contact-form-grid {
+    gap: 12px;
+  }
+
+  .contact-modal-panel {
+    width: min(100%, 100%);
+    max-height: calc(100vh - 24px);
+    padding: 18px;
+  }
+
+  .gallery-nav-control:active,
+  .primary-action:active,
+  .ghost-action:active,
+  .exhibit-arrow:active,
+  .contact-social-link:active {
+    transform: translateY(0) scale(0.98);
+    filter: brightness(1.05);
+  }
+}
+
+@media (max-width: 360px) {
+  .gallery-nav {
+    padding: 8px 6px;
+    gap: 6px;
+  }
+
+  .gallery-nav-actions {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .gallery-nav-control {
+    min-width: 0;
+    padding: 0 10px;
+  }
+
+  .gallery-nav-mark {
+    width: 32px;
+    height: 32px;
+    font-size: 10px;
+  }
+
+  .hero-copy {
+    padding: 0 10px;
+  }
+
+  .hero-name {
+    font-size: clamp(14px, 3.5vw, 18px);
+  }
+
+  .hero-title {
+    font-size: 14px;
+  }
+
+  .hero-proof-strip {
+    gap: 6px 10px;
+    font-size: 11px;
+  }
+
+  .hero-proof-strip span:not(:last-child)::after {
+    right: -8px;
+  }
+
+  .primary-action,
+  .ghost-action {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .gallery-section,
+  .timeline-section,
+  .contact-gallery {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .exhibit-wall {
+    padding: 16px 4px 16px;
+    --exhibit-gap: 16px;
+    --exhibit-column-shrink: 8px;
+  }
+
+  .skill-dial {
+    min-height: 60px;
+  }
+
+  .skill-dial::after {
+    display: none;
+  }
+
+  .skill-dial span {
+    min-width: 100px;
+    padding: 0 12px;
+  }
+
+  .highlight-grid {
+    gap: 10px;
+  }
+
+  .contact-panel {
+    padding: 16px;
+  }
+
+  .contact-form {
+    padding: 14px;
+  }
+
+  .contact-form-grid {
+    gap: 12px;
+  }
+
+  .contact-form-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .contact-form-footer p {
+    text-align: left;
+  }
+
+  .contact-modal-panel {
+    max-height: calc(100vh - 20px);
   }
 }
