@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import Link from "next/link";
 import { GalleryNav } from "@/app/gallery-nav";
@@ -11,6 +11,18 @@ const accentColors = ["#cbb7a6", "#bab3cb", "#b9cbb3", "#c7cbb3", "#cbb3c7"];
 
 export default function Home() {
   const [isContactOpen, setIsContactOpen] = useState(false);
+  const exhibitRailRef = useRef<HTMLDivElement>(null);
+
+  function scrollExhibits(direction: "left" | "right") {
+    const rail = exhibitRailRef.current;
+    if (!rail) return;
+
+    const amount = Math.min(rail.clientWidth * 0.8, 720);
+    rail.scrollBy({
+      left: direction === "left" ? -amount : amount,
+      behavior: "smooth",
+    });
+  }
 
   return (
     <main className="gallery-shell min-h-screen overflow-hidden bg-[#12121a] text-white">
@@ -48,30 +60,68 @@ export default function Home() {
           <h2>A multidisciplinary background applied to real business needs</h2>
         </div>
 
-        <div className="exhibit-wall">
-          {resume.experience.map((item, index) => (
-            <Link
-              key={`${item.role}-${item.period}`}
-              href={`/experience/${item.slug}`}
-              className="exhibit-card"
-              style={
-                {
-                  "--tilt": exhibitTilt[index % exhibitTilt.length],
-                  "--accent": accentColors[index % accentColors.length],
-                } as CSSProperties
-              }
-            >
-              <div className="exhibit-art">
-                <span>{String(index + 1).padStart(2, "0")}</span>
-              </div>
-              <div className="exhibit-info">
-                <p className="exhibit-period">{item.period}</p>
-                <h3>{item.role}</h3>
-                <p className="exhibit-company">{item.company}</p>
-                <p>{item.details}</p>
-              </div>
-            </Link>
-          ))}
+        <div className="exhibit-rail">
+          <button
+            type="button"
+            className="exhibit-arrow exhibit-arrow-left"
+            aria-label="Scroll experience left"
+            onClick={() => scrollExhibits("left")}
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M15 5 8 12l7 7"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+
+          <div ref={exhibitRailRef} className="exhibit-wall">
+            {resume.experience.map((item, index) => (
+              <Link
+                key={`${item.role}-${item.period}`}
+                href={`/experience/${item.slug}`}
+                className="exhibit-card"
+                style={
+                  {
+                    "--tilt": exhibitTilt[index % exhibitTilt.length],
+                    "--accent": accentColors[index % accentColors.length],
+                  } as CSSProperties
+                }
+              >
+                <div className="exhibit-art">
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                </div>
+                <div className="exhibit-info">
+                  <p className="exhibit-period">{item.period}</p>
+                  <h3>{item.role}</h3>
+                  <p className="exhibit-company">{item.company}</p>
+                  <p>{item.details}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            className="exhibit-arrow exhibit-arrow-right"
+            aria-label="Scroll experience right"
+            onClick={() => scrollExhibits("right")}
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="m9 5 7 7-7 7"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
         </div>
       </section>
 

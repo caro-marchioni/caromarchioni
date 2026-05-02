@@ -8,7 +8,6 @@ type NavItem = {
 const navItems: NavItem[] = [
   { href: "#top", label: "Home" },
   { href: "#experience", label: "Work" },
-  { href: "#contact", label: "Contact" },
 ];
 
 type GalleryNavProps = {
@@ -21,7 +20,7 @@ export function GalleryNav({ onOpenContact }: GalleryNavProps) {
       <div className="gallery-nav-brand">
         {navItems.slice(0, 1).map((item) => (
           <a key={item.label} href={item.href} className="gallery-link gallery-nav-name">
-            <span className="gallery-nav-mark">CM</span>
+            <span className="gallery-nav-mark">CMR</span>
             <span className="gallery-link-label">{item.label}</span>
           </a>
         ))}
