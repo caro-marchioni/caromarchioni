@@ -10,9 +10,27 @@ const exhibitTilt = ["-2deg", "1.5deg", "-1deg", "2deg", "-1.5deg"];
 const accentColors = ["#cbb7a6", "#bab3cb", "#b9cbb3", "#c7cbb3", "#cbb3c7"];
 
 const EXPERIENCE_PAGE_SIZE = 5;
+const EMAILJS_PUBLIC_KEY = "U693Nh1mEKawPbYuK";
+const EMAILJS_SERVICE_ID = "service_of9vlm2";
+const EMAILJS_TEMPLATE_ID = "template_autoreply";
+
+type EmailJsClient = {
+  init: (publicKey: string) => void;
+  send: (
+    serviceId: string,
+    templateId: string,
+    templateParams: Record<string, string>
+  ) => Promise<unknown>;
+};
 
 export default function Home() {
   const [isContactOpen, setIsContactOpen] = useState(false);
+  const [isThankYouOpen, setIsThankYouOpen] = useState(false);
+  const [isSubmittingInquiry, setIsSubmittingInquiry] = useState(false);
+  const [inquiryStatus, setInquiryStatus] = useState<{
+    type: "idle" | "success" | "error";
+    message: string;
+  }>({ type: "idle", message: "" });
   const exhibitRailRef = useRef<HTMLDivElement>(null);
 
   const showExperienceArrows =
@@ -30,31 +48,72 @@ export default function Home() {
     });
   }
 
-  function handleInquirySubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleInquirySubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const formData = new FormData(event.currentTarget);
-    const firstName = String(formData.get("name") || "").trim();
-    const lastName = String(formData.get("surname") || "").trim();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const firstName = String(formData.get("firstName") || "").trim();
+    const lastName = String(formData.get("lastName") || "").trim();
     const email = String(formData.get("email") || "").trim();
-    const inquiry = String(formData.get("inquiry") || "").trim();
+    const message = String(formData.get("message") || "").trim();
+    const emailjsClient = (window as Window & {
+      emailjs?: EmailJsClient;
+    }).emailjs;
 
-    const fullName = [firstName, lastName].filter(Boolean).join(" ");
-    const subject = fullName
-      ? `Inquiry from ${fullName}`
-      : "New website inquiry";
+    if (!emailjsClient) {
+      setInquiryStatus({
+        type: "error",
+        message: "The contact form is temporarily unavailable.",
+      });
+      return;
+    }
 
-    const body = [
-      fullName ? `Name: ${fullName}` : null,
-      email ? `Email: ${email}` : null,
-      "",
-      "Inquiry:",
-      inquiry || "(No message provided)",
-    ]
-      .filter((line) => line !== null)
-      .join("\n");
+    const templateParams = {
+      firstName,
+      lastName,
+      email,
+      message,
+    };
 
-    window.location.href = `mailto:${resume.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    setIsSubmittingInquiry(true);
+    setInquiryStatus({ type: "idle", message: "" });
+
+    try {
+      emailjsClient.init(EMAILJS_PUBLIC_KEY);
+      await emailjsClient.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        templateParams
+      );
+
+      form.reset();
+      setInquiryStatus({
+        type: "success",
+        message: "Inquiry sent successfully.",
+      });
+      setIsContactOpen(false);
+      setIsThankYouOpen(true);
+      window.setTimeout(() => {
+        setIsThankYouOpen(false);
+        const topSection = document.getElementById("top");
+        if (topSection) {
+          topSection.scrollIntoView({ behavior: "smooth", block: "start" });
+        } else {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      }, 2200);
+    } catch (error) {
+      setInquiryStatus({
+        type: "error",
+        message:
+          error instanceof Error && error.message
+            ? error.message
+            : "There was a problem sending your message. Please try again.",
+      });
+    } finally {
+      setIsSubmittingInquiry(false);
+    }
   }
 
   return (
@@ -258,14 +317,18 @@ export default function Home() {
               <div className="contact-form-grid">
                 <label className="contact-field">
                   <span>First Name</span>
-                  <input type="text" name="name" autoComplete="given-name" />
+                  <input
+                    type="text"
+                    name="firstName"
+                    autoComplete="given-name"
+                  />
                 </label>
 
                 <label className="contact-field">
                   <span>Last Name</span>
                   <input
                     type="text"
-                    name="surname"
+                    name="lastName"
                     autoComplete="family-name"
                   />
                 </label>
@@ -278,16 +341,38 @@ export default function Home() {
 
               <label className="contact-field">
                 <span>How could I help you?</span>
-                <textarea name="inquiry" maxLength={2000} rows={8} />
+                <textarea name="message" maxLength={2000} rows={8} />
               </label>
 
               <div className="contact-form-footer">
-                <p>Maximum 2000 characters.</p>
-                <button type="submit" className="primary-action">
-                  Send
+                <p className={`contact-form-status contact-form-status-${inquiryStatus.type}`}>
+                  {inquiryStatus.type === "idle"
+                    ? "Maximum 2000 characters."
+                    : inquiryStatus.message}
+                </p>
+                <button
+                  type="submit"
+                  className="primary-action"
+                  disabled={isSubmittingInquiry}
+                >
+                  {isSubmittingInquiry ? "Sending..." : "Send"}
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      ) : null}
+
+      {isThankYouOpen ? (
+        <div className="contact-modal" role="status" aria-live="polite">
+          <div className="contact-modal-backdrop" />
+          <div className="contact-modal-panel thank-you-panel">
+            <p className="gallery-kicker">Thank You</p>
+            <h2>Your inquiry has been sent.</h2>
+            <p className="contact-intro">
+              Thank you for reaching out. I will review your message and get
+              back to you soon.
+            </p>
           </div>
         </div>
       ) : null}

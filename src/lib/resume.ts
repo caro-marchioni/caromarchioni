@@ -31,7 +31,7 @@ export const resume: ResumeProfile = {
   eyebrow: "People-centered business & operations support",
   heroHeading: "Helping small & medium businesses to thrive",
   title:
-    "Supporting busines owners growing teams improve processes, strengthen client experience, and bring more structure to day-to-day operations.",
+    "Supporting business owners growing teams, improve processes, strengthen client experience and bring more structure to day-to-day operations.",
   aboutSummary:
     "I work across operations, quality, client experience, and team support, with experience spanning digital products, clinics, and small service businesses. My background combines QA, process improvement, psychology, and teaching, which means I tend to approach business problems through both structure and people.",
   aboutHighlights: [
@@ -41,6 +41,11 @@ export const resume: ResumeProfile = {
   ],
   email: "carolina.marchioni@gmail.com",
   socials: [
+        {
+      label: "Calendly",
+      image: "calendly-icon.png",
+      href: "https://calendly.com/caro-marchioni",
+    },
     {
       label: "LinkedIn",
       image: "linkedin-icon.png",
@@ -51,11 +56,7 @@ export const resume: ResumeProfile = {
       image: "instagram-icon.png",
       href: "https://www.instagram.com/",
     },
-    {
-      label: "Gmail",
-      image: "gmail-icon.png",
-      href: "mailto:carolina.marchioni@gmail.com",
-    },
+
   ],
   experience: [
   {

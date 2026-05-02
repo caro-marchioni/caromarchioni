@@ -17,7 +17,7 @@ export function GalleryNav() {
       <div className="gallery-nav-brand">
         <SectionLink
           href="#top"
-          className="gallery-nav-mark"
+          className="gallery-nav-control gallery-nav-mark"
           aria-label="Back to top"
         >
           CMR
@@ -26,12 +26,16 @@ export function GalleryNav() {
 
       <div className="gallery-nav-actions">
         {navItems.map((item) => (
-          <SectionLink key={item.label} href={item.href} className="gallery-link">
+          <SectionLink
+            key={item.label}
+            href={item.href}
+            className="gallery-nav-control gallery-link"
+          >
             <span className="gallery-link-label">{item.label}</span>
           </SectionLink>
         ))}
 
-        <SectionLink href="#contact" className="gallery-connect">
+        <SectionLink href="#contact" className="gallery-nav-control gallery-connect">
           Contact
         </SectionLink>
       </div>
